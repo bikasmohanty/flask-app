@@ -1,32 +1,14 @@
-import pandas as pd
-from flask import Flask, jsonify, request
+import numpy as np
+from flask import Flask, request, jsonify, render_template
 import pickle
-
-# load model
-model = pickle.load(open('model.pkl','rb'))
-
-# app
 app = Flask(__name__)
-
-# routes
-@app.route('/', methods=['POST'])
-
-def predict():
-    # get data
-    data = request.get_json(force=True)
-
-    # convert data into dataframe
-    data.update((x, [y]) for x, y in data.items())
-    data_df = pd.DataFrame.from_dict(data)
-
-    # predictions
-    result = model.predict(data_df)
-
-    # send back to browser
-    output = {'results': int(result[0])}
-
-    # return data
-    return jsonify(results=output)
-
+# Code to load ML model
+@app.route('/')
+def home():    
+     return render_template(“filename.html”)
+@app.route('/ml-model', methods=['POST'])
+def run_model():
+     # Code to use the trained model to make real time predictions
+     return render_template(“filename.html”, result)
 if __name__ == '__main__':
-    app.run(port = 5000, debug=True)
+     app.run()
